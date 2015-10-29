@@ -6,39 +6,95 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SurveyTest extends TestCase
 {
-    use DatabaseTransactions;
+    #use DatabaseTransactions;
+
+    public function loadFixtures($surveyOpts = [], $questionOpts = [])
+    {
+        $this->survey = factory(App\Survey::class)->create($surveyOpts);
+        $this->question = factory(App\Question::class)->make($questionOpts);
+        $this->survey->questions()->save($this->question);
+    }
 
     public function setUp()
     {
         parent::setUp();
 
         $this->faker = Faker\Factory::create();
-
-        $this->survey = factory(App\Survey::class)->create();
-        $this->question = factory(App\Question::class)->make();
-        $this->survey->questions()->save($this->question);
     }
 
     /**
-     * Test survey questions
+     * Test regular text question
      *
      * @return void
      */
-    public function testSurveysQuestons()
+    public function testTextQueston()
     {
+        $this->loadFixtures();
+
         $this
             ->visit('/surveys/'.$this->survey->id.'/questions')
-            ->see($this->survey->name)
             ->see($this->question->label)
+            ->type($this->faker->word, $this->question->field)
         ;
     }
 
+    /**
+     * Test survey question with checkbox field
+     *
+     * @return void
+     */
+    public function testCheckboxQuestion()
+    {
+        $this->loadFixtures([], [
+            'type' => 'checkbox'
+        ]);
+
+        $this
+            ->visit('/surveys/'.$this->survey->id.'/questions')
+            ->see('checkbox')
+            ->check($this->question->field)
+        ;
+    }
+
+    /**
+     * Test survey questions with select field
+     *
+     * @return void
+     */
+    public function testSelectQuestion()
+    {
+        $options = ["" => ""];
+        foreach ($this->faker->words() as $word) {
+            $options[$word] = $word;
+        }
+        $this->loadFixtures([], [
+            'type'    => 'select',
+            'options' => $options,
+        ]);
+
+        $this
+            ->visit('/surveys/'.$this->survey->id.'/questions')
+            ->see('<select')
+            ->see(key($options))
+            ->select("", $this->question->field)
+        ;
+    }
+
+    /**
+     * Test submitting survey questions
+     *
+     * @return void
+     */
+    /*
     public function testSubmitSurveyQuestions()
     {
+        $this->loadFixtures();
+
         $this
             ->visit('/surveys/'.$this->survey->id.'/questions')
             ->type($this->faker->word, $this->question->field)
             ->press('Submit')
         ;
     }
+    */
 }
