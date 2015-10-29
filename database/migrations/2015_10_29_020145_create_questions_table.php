@@ -17,7 +17,7 @@ class CreateQuestionsTable extends Migration
             $table->string('label');
             $table->string('field');
             $table->string('type');
-            $table->text('values')->nullable();
+            $table->text('options')->nullable();
             $table->text('rules')->nullable();
             $table->timestamps();
         });
