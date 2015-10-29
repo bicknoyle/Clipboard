@@ -14,7 +14,11 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call(UserTableSeeder::class);
+        factory(App\Survey::class, 3)->create()->each(function ($s) {
+            factory(App\Question::class, 5)->make()->each(function ($q) use ($s) {
+                $s->questions()->save($q);
+            });
+        });
 
         Model::reguard();
     }
