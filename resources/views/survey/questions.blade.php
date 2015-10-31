@@ -5,6 +5,17 @@
 @section('content')
     <h2>{{ $survey->name }}</h2>
 
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <p><strong>Uh-oh!</strong> There was a problem with your submission:</p>
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     {!! Form::open() !!}
         @foreach($survey->questions as $question)
             <div class="form-group">
