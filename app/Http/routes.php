@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('surveys/{id}/questions', 'SurveyController@getSurveyQuestions');
+Route::post('surveys/{id}/questions', 'SurveyController@postSurveyQuestions');
+Route::get('surveys/{id}/done', 'SurveyController@getSurveyDone');

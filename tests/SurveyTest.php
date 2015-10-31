@@ -85,16 +85,34 @@ class SurveyTest extends TestCase
      *
      * @return void
      */
-    /*
     public function testSubmitSurveyQuestions()
     {
         $this->loadFixtures();
+        $input = $this->faker->word;
 
         $this
             ->visit('/surveys/'.$this->survey->id.'/questions')
-            ->type($this->faker->word, $this->question->field)
+            ->type($input, $this->question->field)
             ->press('Submit')
+            ->see("Thank you")
+            ->seeInDatabase('answers', ['question_id' => $this->question->id, 'value' => $input])
         ;
     }
-    */
+
+    /**
+     * Test submit fails validation
+     *
+     * @return void
+     */
+    public function testSubmitFailsValidation()
+    {
+        $this->loadFixtures([], ['rules' => ['required']]);
+
+        $this
+            ->visit('/surveys/'.$this->survey->id.'/questions')
+            ->press('Submit')
+            ->seePageIs('/surveys/'.$this->survey->id.'/questions')
+            ->see('The '.$this->question->field.' field is required')
+        ;
+    }
 }
