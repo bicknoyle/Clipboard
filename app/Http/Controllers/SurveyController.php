@@ -32,7 +32,7 @@ class SurveyController extends Controller
     {
         $survey = Survey::findOrFail($id);
 
-        return view('survey.questions', compact('survey'));
+        return view('survey.show', compact('survey'));
     }
 
     /**
