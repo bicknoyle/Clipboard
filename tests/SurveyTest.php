@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SurveyTest extends TestCase
 {
-    #use DatabaseTransactions;
+    use DatabaseTransactions;
 
     public function loadFixtures($surveyOpts = [], $questionOpts = [])
     {
@@ -32,7 +32,7 @@ class SurveyTest extends TestCase
         $this->loadFixtures();
 
         $this
-            ->visit('/surveys/'.$this->survey->id.'/questions')
+            ->visit(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
             ->see($this->question->label)
             ->type($this->faker->word, $this->question->field)
         ;
@@ -50,7 +50,7 @@ class SurveyTest extends TestCase
         ]);
 
         $this
-            ->visit('/surveys/'.$this->survey->id.'/questions')
+            ->visit(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
             ->see('checkbox')
             ->check($this->question->field)
         ;
@@ -73,7 +73,7 @@ class SurveyTest extends TestCase
         ]);
 
         $this
-            ->visit('/surveys/'.$this->survey->id.'/questions')
+            ->visit(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
             ->see('<select')
             ->see(key($options))
             ->select("", $this->question->field)
@@ -91,7 +91,7 @@ class SurveyTest extends TestCase
         $input = $this->faker->word;
 
         $this
-            ->visit('/surveys/'.$this->survey->id.'/questions')
+            ->visit(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
             ->type($input, $this->question->field)
             ->press('Submit')
             ->see("Thank you")
@@ -109,9 +109,9 @@ class SurveyTest extends TestCase
         $this->loadFixtures([], ['rules' => ['required']]);
 
         $this
-            ->visit('/surveys/'.$this->survey->id.'/questions')
+            ->visit(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
             ->press('Submit')
-            ->seePageIs('/surveys/'.$this->survey->id.'/questions')
+            ->seePageIs(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
             ->see('The '.$this->question->field.' field is required')
         ;
     }

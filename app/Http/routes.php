@@ -15,6 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('surveys/{id}/questions', 'SurveyController@getSurveyQuestions');
-Route::post('surveys/{id}/questions', 'SurveyController@postSurveyQuestions');
+Route::get('surveys/{id}', 'SurveyController@getSurvey');
+Route::post('surveys/{id}', 'SurveyController@postSurvey');
 Route::get('surveys/{id}/done', 'SurveyController@getSurveyDone');
