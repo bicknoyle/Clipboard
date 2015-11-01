@@ -26,7 +26,6 @@ class CreateQuestionsTable extends Migration
             $table->increments('id');
             $table->integer('survey_id')->unsigned();
             $table->integer('question_id')->unsigned();
-            $table->integer('weight')->unsigned();
             $table->timestamps();
 
             $table->foreign('survey_id')->references('id')->on('surveys')->onDelete('cascade');
