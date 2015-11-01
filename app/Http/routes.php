@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('admin', 'AdminController@getIndex');
+Route::resource('admin/surveys', 'Admin\SurveyController', [
+	'only' => ['create', 'store', 'edit', 'update']
+]);
+
 Route::get('surveys', 'SurveyController@getIndex');
 Route::get('surveys/{id}', 'SurveyController@getSurvey');
 Route::post('surveys/{id}', 'SurveyController@postSurvey');

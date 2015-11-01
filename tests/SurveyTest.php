@@ -8,20 +8,6 @@ class SurveyTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function loadFixtures($surveyOpts = [], $questionOpts = [])
-    {
-        $this->survey = factory(App\Survey::class)->create($surveyOpts);
-        $this->question = factory(App\Question::class)->make($questionOpts);
-        $this->survey->questions()->save($this->question);
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->faker = Faker\Factory::create();
-    }
-
     /**
      * Test survey index
      *

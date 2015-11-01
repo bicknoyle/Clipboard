@@ -10,6 +10,18 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     protected $baseUrl = 'http://localhost';
 
     /**
+     * Setup some things to use for testing
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->faker = Faker\Factory::create();
+    }
+
+    /**
      * Creates the application.
      *
      * @return \Illuminate\Foundation\Application
@@ -21,5 +33,17 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    /**
+     * Load up some data for testing
+     *
+     * @return void
+     */
+    public function loadFixtures($surveyOpts = [], $questionOpts = [])
+    {
+        $this->survey = factory(App\Survey::class)->create($surveyOpts);
+        $this->question = factory(App\Question::class)->make($questionOpts);
+        $this->survey->questions()->save($this->question);
     }
 }
