@@ -10,6 +10,18 @@ use App\Survey;
 class SurveyController extends Controller
 {
     /**
+     * Index of surveys
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getIndex()
+    {
+        $surveys = Survey::all();
+
+        return view('survey.index', compact('surveys'));
+    }
+
+    /**
      * Show that survey is complete
      *
      * @param  int  $id

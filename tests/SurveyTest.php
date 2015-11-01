@@ -23,6 +23,32 @@ class SurveyTest extends TestCase
     }
 
     /**
+     * Test survey index
+     *
+     * @return void
+     */
+    public function testIndex()
+    {
+        $this->loadFixtures();
+
+        $this
+            ->visit('/surveys')
+            ->see($this->survey->name)
+        ;
+    }
+
+    public function testLinksToSurvey()
+    {
+        $this->loadFixtures();
+
+        $this
+            ->visit('/surveys')
+            ->click($this->survey->name)
+            ->seePageIs(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
+        ;
+    }
+
+    /**
      * Test regular text question
      *
      * @return void
