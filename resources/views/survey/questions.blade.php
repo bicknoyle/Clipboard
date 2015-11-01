@@ -19,20 +19,14 @@
     {!! Form::open() !!}
         @foreach($survey->questions as $question)
             <div class="form-group">
-                @if('checkbox' == $question->type)
-                    <div class="checkbox">
-                        <label>
-                            {!! Form::checkbox($question->field) !!}
-                            {{ $question->label }}
-                        </label>
-                    </div>
+                @if($question->isType('checkbox'))
+                    @include('survey._checkbox', $question)
+                @elseif($question->isType('radio'))
+                    @include('survey._radio', $question)
+                @elseif($question->isType('select'))
+                    @include('survey._select', $question)
                 @else
-                    {!! Form::label($question->field, $question->label, ['class' => 'control-label']) !!}
-                    @if('select' == $question->type)
-                        {!! Form::select($question->field, $question->options, null, ['class' => 'form-control']) !!}
-                    @else
-                        {!! Form::text($question->field, null, ['class' => 'form-control']) !!}
-                    @endif
+                    @include('survey._text', $question)
                 @endif
             </div>
         @endforeach

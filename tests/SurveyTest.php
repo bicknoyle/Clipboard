@@ -81,6 +81,31 @@ class SurveyTest extends TestCase
     }
 
     /**
+     * Test survey questions with radio field
+     *
+     * @return void
+     */
+    public function testRadioQuestion()
+    {
+        $options = [];
+        foreach ($this->faker->words() as $word) {
+            $options[$word] = $word;
+        }
+        $this->loadFixtures([], [
+            'type'    => 'radio',
+            'options' => $options,
+        ]);
+
+        $this
+            ->visit(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
+            ->see('radio')
+            ->see(key($options))
+            ->select("", $this->question->field)
+        ;
+    }
+
+
+    /**
      * Test submitting survey questions
      *
      * @return void

@@ -14,11 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        factory(App\Survey::class, 3)->create()->each(function ($s) {
-            factory(App\Question::class, 5)->make(['rules' => ['required']])->each(function ($q) use ($s) {
-                $s->questions()->save($q);
-            });
-        });
+        $this->call(DemoSeeder::class);
+        $this->call(SurveySeeder::class);
 
         Model::reguard();
     }

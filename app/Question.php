@@ -16,6 +16,17 @@ class Question extends Model
         'rules'   => 'array',
     ];
 
+    /**
+     * Check if question is type
+     *
+     * @param string $type
+     * @return bool
+     */
+    public function isType($type)
+    {
+        return $type === $this->type;
+    }
+
     public function surveys()
     {
     	return $this->belongsToMany('App\Survey', 'survey_questions')->withTimestamps();
