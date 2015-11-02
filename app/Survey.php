@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Question;
 use App\Response;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +18,11 @@ class Survey extends Model
     public function addResponse(Response $response)
     {
     	$this->responses()->save($response);
+    }
+
+    public function addQuestion(Question $question)
+    {
+        $this->questions()->save($question);
     }
 
     public function questions()

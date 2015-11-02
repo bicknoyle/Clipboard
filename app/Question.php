@@ -17,6 +17,13 @@ class Question extends Model
     ];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['label', 'field', 'type', 'rules', 'options'];
+
+    /**
      * Check if question is type
      *
      * @param string $type

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Survey;
+use App\Question;
 
 class SurveyController extends Controller
 {
@@ -81,7 +82,16 @@ class SurveyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|min:3'
+        ]);
+
+        $survey = Survey::findOrFail($id);
+        $survey->update($request->only(['name']));
+        return redirect()
+            ->route('admin.surveys.edit', ['id' => $survey->id])
+            ->with('success', 'Survey updated!')
+        ;
     }
 
     /**
@@ -93,5 +103,46 @@ class SurveyController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Store a question attached to the survey
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function storeQuestion(Request $request, $id)
+    {
+        $survey = Survey::findOrFail($id);
+
+        $this->validate($request, [
+            'label' => 'required',
+            'field' => 'required',
+            'type'  => 'required|in:text,checkbox,radio,select'
+        ]);
+
+        $data = $request->only(['label', 'field', 'type', 'rules', 'options']);
+
+        // sanitize array fields
+        // Is there a cleaner way todo this???
+        foreach(['rules', 'options'] as $field) {
+            if (empty($data[$field])) {
+                continue;
+            }
+
+            $data[$field] = array_filter($data[$field]);
+
+            if (empty($data[$field])) {
+                $data[$field] = null;
+            }
+        }
+
+        $survey->addQuestion(new Question($data));
+
+        return redirect()
+            ->route('admin.surveys.edit', ['id' => $survey->id])
+            ->with('success', 'Question added!')
+        ;
     }
 }
