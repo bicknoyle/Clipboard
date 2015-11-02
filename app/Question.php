@@ -42,7 +42,7 @@ class Question extends Model
      */
     public function setRulesFromString($string)
     {
-        $this->rules = $this->splitPipeString($string);
+        $this->rules = $this->parsePipeString($string);
     }
 
     public function survey()
@@ -51,15 +51,15 @@ class Question extends Model
     }
 
     /**
-     * Split pipe delimited string into array
+     * Parse pipe delimited string into array
      *
      * @param string $string
      * @return array
      */
-    private function splitPipeString($string)
+    private function parsePipeString($string)
     {
         $result = array_filter(explode('|', $string), function ($value) {
-            return strlen(trim($value));
+            return strlen($value);
         });
 
         return count($result) ? $result : null;
