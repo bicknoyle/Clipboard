@@ -27,8 +27,8 @@ class Question extends Model
         return $type === $this->type;
     }
 
-    public function surveys()
+    public function survey()
     {
-    	return $this->belongsToMany('App\Survey', 'survey_questions')->withTimestamps();
+    	return $this->belongsTo('App\Survey');
     }
 }

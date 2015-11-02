@@ -21,7 +21,7 @@ class Survey extends Model
 
     public function questions()
     {
-    	return $this->belongsToMany('App\Question', 'survey_questions')->withTimestamps();
+    	return $this->hasMany('App\Question');
     }
 
     public function responses()
