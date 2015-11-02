@@ -129,6 +129,7 @@ class AdminSurveyTest extends TestCase
             ->type('reallyfakerule', 'rules')
             ->press('Add')
             ->seePageIs($url)
+            ->see('The rules field is not valid.')
             ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field])
         ;
     }

@@ -120,12 +120,14 @@ class SurveyController extends Controller
             'label' => 'required',
             'field' => 'required',
             'type'  => 'required|in:text,checkbox,radio,select',
-            'rules' => '' // TODO: validation_str validator
+            'rules' => 'rules_exist'
+        ], [
+            'rules_exist' => "The :attribute field is not valid."
         ]);
 
         $question = new Question($request->only(['label', 'field', 'type']));
 
-        $question->setRulesFromString($request->input('rules'));
+        $question->setRulesFromString(trim($request->input('rules')));
 
         $survey->addQuestion($question);
 
