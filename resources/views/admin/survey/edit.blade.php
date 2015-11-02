@@ -46,14 +46,11 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                            {!! Form::label('rules') !!}
-                            {!! Form::text('rules', null, ['class' => 'form-control']) !!}
-                            <div class="help-block">
-                                HINT: Separate multiple <a href="http://laravel.com/docs/5.1/validation" target="_blank">validation rules</a> using the | character (e.g. <code>required|min:3</code>)
-                            </div>
-                        </div>
+                    <div class="checkbox">
+                        <label>
+                            {!! Form::checkbox('rules[required]') !!}
+                            Require this field
+                        </label>
                     </div>
                 </div>
 

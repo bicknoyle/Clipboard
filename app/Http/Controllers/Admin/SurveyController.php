@@ -117,17 +117,22 @@ class SurveyController extends Controller
         $survey = Survey::findOrFail($id);
 
         $this->validate($request, [
-            'label' => 'required',
-            'field' => 'required',
-            'type'  => 'required|in:text,checkbox,radio,select',
-            'rules' => 'rules_exist'
-        ], [
-            'rules_exist' => "The :attribute field is not valid."
+            'label'    => 'required',
+            'field'    => 'required',
+            'type'     => 'required|in:text,checkbox,radio,select',
+            'required' => 'boolean'
         ]);
 
         $question = new Question($request->only(['label', 'field', 'type']));
 
-        $question->setRulesFromString(trim($request->input('rules')));
+        $rules = [];
+        if ($request->input('rules.required')) {
+            $rules[] = 'required';
+        }
+
+        if (count($rules)) {
+            $question->rules = $rules;
+        }
 
         $survey->addQuestion($question);
 

@@ -63,16 +63,6 @@ class AdminSurveyTest extends TestCase
         $field = $this->faker->word();
         $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
 
-        // Validation failure
-        $this
-            ->visit($url)
-            ->press('Add')
-            ->seePageIs($url)
-            ->see('The label field is required.')
-            ->see('The field field is required.')
-        ;
-
-        // Success
         $this
             ->visit($url)
             ->type($label, 'label')
@@ -85,27 +75,22 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
-     * Test adding question with rules
+     * Test adding questions validation
      *
      * @return void
      */
-    public function testAddQuestionWithRules()
+    public function testAddQuestionValidation()
     {
         $this->loadFixtures();
 
-        $label = $this->faker->sentence(3);
-        $field = $this->faker->word();
         $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
 
         $this
             ->visit($url)
-            ->type($label, 'label')
-            ->type($field, 'field')
-            ->type('required|min:3', 'rules')
             ->press('Add')
             ->seePageIs($url)
-            ->see('Question added')
-            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'text', 'rules' => '["required","min:3"]', 'options' => null])
+            ->see('The label field is required.')
+            ->see('The field field is required.')
         ;
     }
 
@@ -114,7 +99,7 @@ class AdminSurveyTest extends TestCase
      *
      * @return void
      */
-    public function testAddQuestionWithRulesValidation()
+    public function testAddRequiredQuestion()
     {
         $this->loadFixtures();
 
@@ -126,11 +111,11 @@ class AdminSurveyTest extends TestCase
             ->visit($url)
             ->type($label, 'label')
             ->type($field, 'field')
-            ->type('reallyfakerule', 'rules')
+            ->check('rules[required]')
             ->press('Add')
             ->seePageIs($url)
-            ->see('The rules field is not valid.')
-            ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field])
+            ->see('Question added')
+            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'text', 'rules' => '["required"]', 'options' => null])
         ;
     }
 }

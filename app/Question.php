@@ -34,34 +34,8 @@ class Question extends Model
         return $type === $this->type;
     }
 
-    /**
-     * Set rules from a string
-     *
-     * @param string $string
-     * @return void
-     */
-    public function setRulesFromString($string)
-    {
-        $this->rules = $this->parsePipeString($string);
-    }
-
     public function survey()
     {
     	return $this->belongsTo('App\Survey');
-    }
-
-    /**
-     * Parse pipe delimited string into array
-     *
-     * @param string $string
-     * @return array
-     */
-    private function parsePipeString($string)
-    {
-        $result = array_filter(explode('|', $string), function ($value) {
-            return strlen($value);
-        });
-
-        return count($result) ? $result : null;
     }
 }

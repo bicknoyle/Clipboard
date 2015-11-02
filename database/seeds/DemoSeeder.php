@@ -25,7 +25,6 @@ class DemoSeeder extends Seeder
         $survey->questions()->save(factory(App\Question::class)->make([
             'label' => 'Phone (optional)',
             'field' => 'phone',
-            'rules' => ['min:3']
         ]));
 
         $survey->questions()->save(factory(App\Question::class)->make([
