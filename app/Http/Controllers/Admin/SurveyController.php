@@ -119,26 +119,15 @@ class SurveyController extends Controller
         $this->validate($request, [
             'label' => 'required',
             'field' => 'required',
-            'type'  => 'required|in:text,checkbox,radio,select'
+            'type'  => 'required|in:text,checkbox,radio,select',
+            'rules' => '' // TODO: validation_str validator
         ]);
 
-        $data = $request->only(['label', 'field', 'type', 'rules', 'options']);
+        $question = new Question($request->only(['label', 'field', 'type']));
 
-        // sanitize array fields
-        // Is there a cleaner way todo this???
-        foreach(['rules', 'options'] as $field) {
-            if (empty($data[$field])) {
-                continue;
-            }
+        $question->setRulesFromString($request->input('rules'));
 
-            $data[$field] = array_filter($data[$field]);
-
-            if (empty($data[$field])) {
-                $data[$field] = null;
-            }
-        }
-
-        $survey->addQuestion(new Question($data));
+        $survey->addQuestion($question);
 
         return redirect()
             ->route('admin.surveys.edit', ['id' => $survey->id])

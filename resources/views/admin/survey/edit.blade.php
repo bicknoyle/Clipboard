@@ -34,11 +34,11 @@
 
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             {!! Form::label('field') !!}
                             {!! Form::text('field', null, ['class' => 'form-control']) !!}
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             {!! Form::label('type') !!}
                             {!! Form::select('type', ['text' => 'text', 'checkbox' => 'checkbox', 'radio' => 'radio', 'select' => 'select'], null, ['class' => 'form-control']) !!}
                         </div>
@@ -46,20 +46,14 @@
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('rules') !!}
                     <div class="row">
-                        <div class="col-md-4">
-                            {!! Form::text('rules[0]', null, ['class' => 'form-control', 'placeholder' => 'Rule 1']) !!}
+                        <div class="col-md-6">
+                            {!! Form::label('rules') !!}
+                            {!! Form::text('rules', null, ['class' => 'form-control']) !!}
+                            <div class="help-block">
+                                HINT: Separate multiple <a href="http://laravel.com/docs/5.1/validation" target="_blank">validation rules</a> using the | character (e.g. <code>required|min:3</code>)
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            {!! Form::text('rules[1]', null, ['class' => 'form-control', 'placeholder' => 'Rule 2']) !!}
-                        </div>
-                        <div class="col-md-4">
-                            {!! Form::text('rules[2]', null, ['class' => 'form-control', 'placeholder' => 'Rule 3']) !!}
-                        </div>
-                    </div>
-                    <div class="help-block">
-                        HINT: Use <a href="http://laravel.com/docs/5.1/validation" target="_blank">Laravel's validators</a>
                     </div>
                 </div>
 

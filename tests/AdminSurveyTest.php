@@ -55,7 +55,41 @@ class AdminSurveyTest extends TestCase
      *
      * @return void
      */
-    public function testAddTextQuestion()
+    public function testAddQuestion()
+    {
+        $this->loadFixtures();
+
+        $label = $this->faker->sentence(3);
+        $field = $this->faker->word();
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        // Validation failure
+        $this
+            ->visit($url)
+            ->press('Add')
+            ->seePageIs($url)
+            ->see('The label field is required.')
+            ->see('The field field is required.')
+        ;
+
+        // Success
+        $this
+            ->visit($url)
+            ->type($label, 'label')
+            ->type($field, 'field')
+            ->press('Add')
+            ->seePageIs($url)
+            ->see('Question added')
+            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'text', 'rules' => null, 'options' => null])
+        ;
+    }
+
+    /**
+     * Test adding question with rules
+     *
+     * @return void
+     */
+    public function testAddQuestionWithRules()
     {
         $this->loadFixtures();
 
@@ -67,31 +101,35 @@ class AdminSurveyTest extends TestCase
             ->visit($url)
             ->type($label, 'label')
             ->type($field, 'field')
-            ->select('text', 'type')
+            ->type('required|min:3', 'rules')
             ->press('Add')
             ->seePageIs($url)
             ->see('Question added')
-            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'text', 'rules' => null, 'options' => null])
+            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'text', 'rules' => '["required","min:3"]', 'options' => null])
         ;
     }
 
     /**
-     * Test adding questions validation
+     * Test adding question with rules
      *
      * @return void
      */
-    public function testAddingQuestionsValidation()
+    public function testAddQuestionWithRulesValidation()
     {
         $this->loadFixtures();
 
+        $label = $this->faker->sentence(3);
+        $field = $this->faker->word();
         $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
 
         $this
             ->visit($url)
+            ->type($label, 'label')
+            ->type($field, 'field')
+            ->type('reallyfakerule', 'rules')
             ->press('Add')
             ->seePageIs($url)
-            ->see('The label field is required.')
-            ->see('The field field is required.')
+            ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field])
         ;
     }
 }
