@@ -29,11 +29,11 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
-     * Test showing survey
+     * Test edit survey
      *
      * @return void
      */
-    public function testShow()
+    public function testEdit()
     {
         $this->loadFixtures();
 
@@ -50,11 +50,11 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
-     * Test edit survey
+     * Test update survey
      *
      * @return void
      */
-    public function testEdit()
+    public function testUpdate()
     {
         $this->loadFixtures();
 
