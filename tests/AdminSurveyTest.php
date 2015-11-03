@@ -51,6 +51,27 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
+     * Test showing survey
+     *
+     * @return void
+     */
+    public function testShow()
+    {
+        $this->loadFixtures();
+
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        $this
+            ->visit($url)
+            ->see($this->survey->name)
+            ->see($this->question->label)
+            ->see($this->question->field)
+            ->see($this->question->type)
+            ->see($this->question->optionsToString())
+        ;
+    }
+
+    /**
      * Test adding questions
      *
      * @return void
@@ -129,6 +150,7 @@ class AdminSurveyTest extends TestCase
         $label = $this->faker->sentence(3);
         $field = $this->faker->word();
         $options = $this->faker->words(5);
+        $optionsJson = json_encode(array_combine($options, $options));
 
         $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
 
@@ -141,7 +163,86 @@ class AdminSurveyTest extends TestCase
             ->press('Add')
             ->seePageIs($url)
             ->see('Question added')
-            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'select', 'options' => json_encode($options)])
+            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'select', 'options' => $optionsJson])
+        ;
+    }
+
+    /**
+     * Test select question requires options
+     *
+     * @return void
+     */
+    public function testSelectQuestionRequiresOptions()
+    {
+        $this->loadFixtures();
+
+        $label = $this->faker->sentence(3);
+        $field = $this->faker->word();
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        $this
+            ->visit($url)
+            ->type($label, 'label')
+            ->type($field, 'field')
+            ->select('select', 'type')
+            ->press('Add')
+            ->seePageIs($url)
+            ->see('The options field is required when type is select.')
+            ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field])
+        ;
+    }
+
+    /**
+     * Test adding radio question
+     *
+     * @return void
+     */
+    public function testAddRadioQuestion()
+    {
+        $this->loadFixtures();
+
+        $label = $this->faker->sentence(3);
+        $field = $this->faker->word();
+        $options = $this->faker->words(5);
+        $optionsJson = json_encode(array_combine($options, $options));
+
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        $this
+            ->visit($url)
+            ->type($label, 'label')
+            ->type($field, 'field')
+            ->select('radio', 'type')
+            ->type(implode(', ', $options), 'options')
+            ->press('Add')
+            ->seePageIs($url)
+            ->see('Question added')
+            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'radio', 'options' => $optionsJson])
+        ;
+    }
+
+    /**
+     * Test radio question requires options
+     *
+     * @return void
+     */
+    public function testRadioQuestionRequiresOptions()
+    {
+        $this->loadFixtures();
+
+        $label = $this->faker->sentence(3);
+        $field = $this->faker->word();
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        $this
+            ->visit($url)
+            ->type($label, 'label')
+            ->type($field, 'field')
+            ->select('radio', 'type')
+            ->press('Add')
+            ->seePageIs($url)
+            ->see('The options field is required when type is radio.')
+            ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field])
         ;
     }
 }

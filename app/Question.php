@@ -24,6 +24,16 @@ class Question extends Model
     protected $fillable = ['label', 'field', 'type', 'rules', 'options'];
 
     /**
+     * Check if question is required
+     *
+     * @return bool
+     */
+    public function isRequired()
+    {
+        return in_array('required', is_null($this->rules) ? [] : $this->rules);
+    }
+
+    /**
      * Check if question is type
      *
      * @param string $type
@@ -32,6 +42,21 @@ class Question extends Model
     public function isType($type)
     {
         return $type === $this->type;
+    }
+
+    /**
+     * Return options attribute as a string
+     *
+     * @param string $delimeter
+     * @return string
+     */
+    public function optionsToString($delimeter=', ')
+    {
+        if (is_null($this->options)) {
+            return '';
+        }
+
+        return implode($delimeter, array_values($this->options));
     }
 
     public function survey()

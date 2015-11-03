@@ -120,10 +120,16 @@ class SurveyController extends Controller
             'label'    => 'required',
             'field'    => 'required',
             'type'     => 'required|in:text,checkbox,radio,select',
-            'required' => 'boolean'
+            'required' => 'boolean',
+            'options'  => 'required_if:type,select|required_if:type,radio'
         ]);
 
         $question = new Question($request->only(['label', 'field', 'type']));
+
+        if ($request->input('options')) {
+            $options = preg_split('/ ?, ?/', $request->input('options'));
+            $question->options = array_combine($options, $options);
+        }
 
         $rules = [];
         if ($request->input('rules.required')) {
