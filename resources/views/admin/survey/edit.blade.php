@@ -42,7 +42,7 @@
                     @endif
                 </td>
                 <td>
-                    <a class="btn btn-danger btn-sm"><i class="fa fa-trash"></i><span class="sr-only">Delete Question</span></a>
+                    <button class="confirm-delete btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i><span class="sr-only">Delete Question Id:{{ $question->id }}</span></button>
                 </td>
             </tr>
         @endforeach
@@ -97,4 +97,15 @@
             {!! Form::close() !!}
         </div>
     </div>
+@endsection
+@section('js')
+    @parent
+    <script>
+        $('.confirm-delete').on('click', function (e) {
+            var confirmed = confirm("Are you sure you want to delete this?");
+            if (!confirmed) {
+                e.preventDefault();
+            }
+        });
+    </script>
 @endsection

@@ -147,4 +147,25 @@ class SurveyController extends Controller
             ->with('success', 'Question added!')
         ;
     }
+
+    /**
+     * Delete a question attached to the survey
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int $survey_id
+     * @param  int $question_id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteQuestion(Request $request, $survey_id, $question_id)
+    {
+        $survey = Survey::findOrFail($survey_id);
+        $question = $survey->questions->whereQuestionId($question_id)->firstOrFail();
+
+        $question->delete();
+
+        return redirect()
+            ->route('admin.surveys.edit', ['id' => $survey->id])
+            ->with('success', 'Question deleted!')
+        ;
+    }
 }

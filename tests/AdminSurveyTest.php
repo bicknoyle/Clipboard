@@ -245,4 +245,23 @@ class AdminSurveyTest extends TestCase
             ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field])
         ;
     }
+
+    /**
+     * Test delete question
+     *
+     * @return void
+     */
+    public function testDeleteQuestion()
+    {
+        $this->loadFixtures();
+
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        $this
+            ->visit($url)
+            ->press('Delete Question Id:'.$this->question->id)
+            ->see('Question deleted')
+            ->dontSeeInDatabase('questions', ['question_id' => $question->id])
+        ;
+    }
 }
