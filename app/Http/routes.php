@@ -15,13 +15,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin', 'AdminController@getIndex');
+// Admin
+Route::get('admin', ['uses' => 'AdminController@getIndex', 'as' => 'admin.index']);
 Route::resource('admin/surveys', 'Admin\SurveyController', [
-	'only' => ['create', 'store', 'edit', 'update']
+	'only' => ['create', 'store', 'edit', 'update', 'destroy']
 ]);
 Route::post('admin/surveys/{id}/questions', ['uses' => 'Admin\SurveyController@storeQuestion', 'as' => 'admin.surveys.questions.store']);
-Route::delete('admin/surveys/{survey_id}/questions/{question_id}', ['uses' => 'Admin\SurveyController@deleteQuestion', 'as' => 'admin.surveys.questions.delete']);
+Route::delete('admin/surveys/{survey_id}/questions/{question_id}', ['uses' => 'Admin\SurveyController@destroyQuestion', 'as' => 'admin.surveys.questions.destroy']);
 
+// Public (surveys)
 Route::get('surveys', 'SurveyController@getIndex');
 Route::get('surveys/{id}', 'SurveyController@getSurvey');
 Route::post('surveys/{id}', 'SurveyController@postSurvey');

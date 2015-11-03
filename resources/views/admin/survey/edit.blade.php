@@ -2,6 +2,8 @@
 @section('content')
 	<h2>Edit Survey</h2>
 
+    <h3>Survey Settings</h3>
+
 	{!! Form::model($survey, ['route' => ['admin.surveys.update', $survey->id], 'method' => 'put']) !!}
         <div class="form-group">
             {!! Form::label('name') !!}
@@ -15,8 +17,7 @@
 
     <hr>
 
-    <h2>Questions</h2>
-
+    <h3>Survey Questions</h3>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -42,13 +43,15 @@
                     @endif
                 </td>
                 <td>
-                    {!! Form::open(['route' => ['admin.surveys.questions.delete', $survey->id, $question->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['admin.surveys.questions.destroy', $survey->id, $question->id], 'method' => 'delete']) !!}
                         <button class="confirm-delete btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i><span class="sr-only">Delete Question Id:{{ $question->id }}</span></button>
                     {!! Form::close() !!}
                 </td>
             </tr>
         @endforeach
     </table>
+
+    <hr>
 
     <h3>Add Question</h3>
     <div class="panel panel-default">
@@ -99,6 +102,15 @@
             {!! Form::close() !!}
         </div>
     </div>
+
+    <hr>
+
+    <h3>Delete Survey</h3>
+    {!! Form::open(['route' => ['admin.surveys.destroy', $survey->id], 'method' => 'delete']) !!}
+        <div class="form-group">
+            <button class="confirm-delete btn btn-danger" type="submit"><i class="fa fa-trash"></i> Delete Survey</button>
+        </div>
+    {!! Form::close() !!}
 @endsection
 @section('js')
     @parent

@@ -29,6 +29,27 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
+     * Test showing survey
+     *
+     * @return void
+     */
+    public function testShow()
+    {
+        $this->loadFixtures();
+
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        $this
+            ->visit($url)
+            ->see($this->survey->name)
+            ->see($this->question->label)
+            ->see($this->question->field)
+            ->see($this->question->type)
+            ->see($this->question->optionsToString())
+        ;
+    }
+
+    /**
      * Test edit survey
      *
      * @return void
@@ -51,23 +72,23 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
-     * Test showing survey
+     * Test delete survey
      *
      * @return void
      */
-    public function testShow()
+    public function testDelete()
     {
         $this->loadFixtures();
 
         $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
-
         $this
             ->visit($url)
-            ->see($this->survey->name)
-            ->see($this->question->label)
-            ->see($this->question->field)
-            ->see($this->question->type)
-            ->see($this->question->optionsToString())
+            ->press('Delete Survey')
+            ->seePageIs('/admin')
+            ->see('Survey deleted')
+            ->dontSeeInDatabase('surveys', ['id' => $this->survey->id])
+            ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id])
+            ->dontSeeInDatabase('responses', ['survey_id' => $this->survey->id])
         ;
     }
 
@@ -262,6 +283,7 @@ class AdminSurveyTest extends TestCase
             ->press('Delete Question Id:'.$this->question->id)
             ->see('Question deleted')
             ->dontSeeInDatabase('questions', ['id' => $this->question->id])
+            ->dontSeeInDatabase('answers', ['question_id' => $this->question->id])
         ;
     }
 }

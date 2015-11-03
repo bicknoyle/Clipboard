@@ -102,7 +102,14 @@ class SurveyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $survey = Survey::findOrFail($id);
+
+        $survey->delete();
+
+        return redirect()
+            ->route('admin.index')
+            ->with('success', 'Survey deleted!')
+        ;
     }
 
     /**
@@ -156,7 +163,7 @@ class SurveyController extends Controller
      * @param  int $question_id
      * @return \Illuminate\Http\Response
      */
-    public function deleteQuestion(Request $request, $survey_id, $question_id)
+    public function destroyQuestion(Request $request, $survey_id, $question_id)
     {
         $survey = Survey::findOrFail($survey_id);
         $question = $survey->questions()->whereId($question_id)->firstOrFail();
