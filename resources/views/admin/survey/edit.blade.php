@@ -42,7 +42,9 @@
                     @endif
                 </td>
                 <td>
-                    <button class="confirm-delete btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i><span class="sr-only">Delete Question Id:{{ $question->id }}</span></button>
+                    {!! Form::open(['route' => ['admin.surveys.questions.delete', $survey->id, $question->id], 'method' => 'delete']) !!}
+                        <button class="confirm-delete btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i><span class="sr-only">Delete Question Id:{{ $question->id }}</span></button>
+                    {!! Form::close() !!}
                 </td>
             </tr>
         @endforeach

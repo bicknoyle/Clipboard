@@ -261,7 +261,7 @@ class AdminSurveyTest extends TestCase
             ->visit($url)
             ->press('Delete Question Id:'.$this->question->id)
             ->see('Question deleted')
-            ->dontSeeInDatabase('questions', ['question_id' => $question->id])
+            ->dontSeeInDatabase('questions', ['id' => $this->question->id])
         ;
     }
 }

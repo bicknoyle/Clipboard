@@ -159,7 +159,7 @@ class SurveyController extends Controller
     public function deleteQuestion(Request $request, $survey_id, $question_id)
     {
         $survey = Survey::findOrFail($survey_id);
-        $question = $survey->questions->whereQuestionId($question_id)->firstOrFail();
+        $question = $survey->questions()->whereId($question_id)->firstOrFail();
 
         $question->delete();
 
