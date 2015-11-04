@@ -162,6 +162,34 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
+     * Test text field doesnt accept options
+     *
+     * @return void
+     */
+    public function testDoesntAcceptOptions()
+    {
+        $this->loadFixtures();
+
+        $label = $this->faker->sentence(3);
+        $field = $this->faker->word();
+        $options = $this->faker->words(5);
+        $optionsJson = json_encode(array_combine($options, $options));
+
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        $this
+            ->visit($url)
+            ->type($label, 'label')
+            ->type($field, 'field')
+            ->type('text', 'type')
+            ->type(implode(', ',$options), 'options')
+            ->press('Add')
+            ->see('The options field should be empty for this type.')
+            ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'options' => $options])
+        ;
+    }
+
+    /**
      * Test adding select question
      */
     public function testAddSelectQuestion()

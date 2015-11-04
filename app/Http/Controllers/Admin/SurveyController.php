@@ -128,8 +128,8 @@ class SurveyController extends Controller
             'field'    => 'required',
             'type'     => 'required|in:text,checkbox,radio,select',
             'required' => 'boolean',
-            'options'  => 'required_if:type,select|required_if:type,radio'
-        ]);
+            'options'  => 'required_if:type,select|required_if:type,radio|empty_if:type,text|empty_if:type,checkbox'
+        ], ['options.empty_if' => 'The :attribute field should be empty for this type.']);
 
         $question = new Question($request->only(['label', 'field', 'type']));
 
