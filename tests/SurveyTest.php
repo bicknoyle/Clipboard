@@ -75,10 +75,8 @@ class SurveyTest extends TestCase
      */
     public function testSelectQuestion()
     {
-        $options = ["" => ""];
-        foreach ($this->faker->words() as $word) {
-            $options[$word] = $word;
-        }
+        $options = $this->faker->words(3);
+
         $this->loadFixtures([], [
             'type'    => 'select',
             'options' => $options,
@@ -87,7 +85,9 @@ class SurveyTest extends TestCase
         $this
             ->visit(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
             ->see('<select')
-            ->see(key($options))
+            ->see($options[0])
+            ->see($options[1])
+            ->see($options[2])
             ->select("", $this->question->field)
         ;
     }
@@ -99,10 +99,8 @@ class SurveyTest extends TestCase
      */
     public function testRadioQuestion()
     {
-        $options = [];
-        foreach ($this->faker->words() as $word) {
-            $options[$word] = $word;
-        }
+        $options = $this->faker->words(3);
+
         $this->loadFixtures([], [
             'type'    => 'radio',
             'options' => $options,
@@ -111,7 +109,9 @@ class SurveyTest extends TestCase
         $this
             ->visit(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
             ->see('radio')
-            ->see(key($options))
+            ->see($options[0])
+            ->see($options[1])
+            ->see($options[2])
             ->select("", $this->question->field)
         ;
     }

@@ -31,7 +31,7 @@ class DemoSeeder extends Seeder
             'label'   => 'Favorite Color',
             'field'   => 'color',
             'type'    => 'select',
-            'options' => ['' => '', 'Red' => 'Red', 'Green' => 'Green', 'Blue' => 'Blue'],
+            'options' => ['', 'Red', 'Green', 'Blue'],
             'rules'   => ['required']
         ]));
 
@@ -39,7 +39,7 @@ class DemoSeeder extends Seeder
             'label'   => 'Planes, trains, or automobiles?',
             'field'   => 'vehicle',
             'type'    => 'radio',
-            'options' => ['Planes' => 'Planes', 'Trains' => 'Trains', 'Automobiles' => 'Automobiles'],
+            'options' => ['Planes', 'Trains', 'Automobiles'],
             'rules'   => ['required']
         ]));
 

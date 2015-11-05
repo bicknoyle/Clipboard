@@ -157,7 +157,7 @@ class AdminSurveyTest extends TestCase
             ->press('Add')
             ->seePageIs($url)
             ->see('Question added')
-            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'text', 'rules' => '["required"]', 'options' => null])
+            ->seeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'field' => $field, 'type' => 'text', 'rules' => '["required"]'])
         ;
     }
 
@@ -173,7 +173,7 @@ class AdminSurveyTest extends TestCase
         $label = $this->faker->sentence(3);
         $field = $this->faker->word();
         $options = $this->faker->words(5);
-        $optionsJson = json_encode(array_combine($options, $options));
+        $optionsJson = json_encode($options);
 
         $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
 
@@ -185,7 +185,7 @@ class AdminSurveyTest extends TestCase
             ->type(implode(', ',$options), 'options')
             ->press('Add')
             ->see('The options field should be empty for this type.')
-            ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'options' => $options])
+            ->dontSeeInDatabase('questions', ['survey_id' => $this->survey->id, 'label' => $label, 'options' => $optionsJson])
         ;
     }
 
@@ -199,7 +199,7 @@ class AdminSurveyTest extends TestCase
         $label = $this->faker->sentence(3);
         $field = $this->faker->word();
         $options = $this->faker->words(5);
-        $optionsJson = json_encode(array_combine($options, $options));
+        $optionsJson = json_encode($options);
 
         $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
 
@@ -253,7 +253,7 @@ class AdminSurveyTest extends TestCase
         $label = $this->faker->sentence(3);
         $field = $this->faker->word();
         $options = $this->faker->words(5);
-        $optionsJson = json_encode(array_combine($options, $options));
+        $optionsJson = json_encode($options);
 
         $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
 

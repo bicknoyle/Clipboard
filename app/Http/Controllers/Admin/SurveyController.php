@@ -133,9 +133,8 @@ class SurveyController extends Controller
 
         $question = new Question($request->only(['label', 'field', 'type']));
 
-        if ($request->input('options')) {
-            $options = preg_split('/ ?, ?/', $request->input('options'));
-            $question->options = array_combine($options, $options);
+        if (!empty($request->input('options'))) {
+            $question->options = preg_split('/ ?, ?/', $request->input('options'));
         }
 
         $rules = [];

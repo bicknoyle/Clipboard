@@ -39,7 +39,9 @@ class Survey extends Model
     {
     	$rules = [];
     	foreach ($this->questions as $question) {
-            $rules[$question->field] = empty($question->rules) ? '' : $question->rules;
+            if (isset($question->rules)) {
+                $rules[$question->field] = $question->rules;
+            }
         }
 
         return $rules;
