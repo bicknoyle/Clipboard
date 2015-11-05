@@ -122,4 +122,19 @@
             }
         });
     </script>
+    <script>
+        function setOptionsProp () {
+            var type = $('#type').val()
+              , disabled = false
+            ;
+
+            if ('text' == type || 'checkbox' == type) {
+                disabled = true;
+            }
+            $('#options').prop('disabled', disabled)
+        }
+
+        $(document).ready(function () { setOptionsProp() });
+        $('#type').on('change', setOptionsProp);
+    </script>
 @endsection
