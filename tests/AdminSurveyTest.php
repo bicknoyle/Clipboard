@@ -15,16 +15,18 @@ class AdminSurveyTest extends TestCase
      */
     public function testCreate()
     {
-        $input = $this->faker->sentence(3);
+        $name = $this->faker->sentence(3);
+        $description = $this->faker->text(150);
 
         $this
             ->visit('/admin/surveys/create')
-            ->type($input, 'name')
+            ->type($name, 'name')
+            ->type($description, 'description')
             ->press('Create')
             ->see('Survey created')
             ->see('Edit Survey')
-            ->see($input)
-            ->seeInDatabase('surveys', ['name' => $input])
+            ->see($name)
+            ->seeInDatabase('surveys', ['name' => $name, 'description' => $description])
         ;
     }
 
@@ -58,16 +60,18 @@ class AdminSurveyTest extends TestCase
     {
         $this->loadFixtures();
 
-        $input = $this->faker->sentence(3);
+        $name = $this->faker->sentence(3);
+        $description = $this->faker->text(150);
         $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
 
         $this
             ->visit($url)
-            ->type($input, 'name')
+            ->type($name, 'name')
+            ->type($description, 'description')
             ->press('Update')
             ->seePageIs($url)
             ->see('Survey updated')
-            ->seeInDatabase('surveys', ['id' => $this->survey->id, 'name' => $input])
+            ->seeInDatabase('surveys', ['name' => $name, 'description' => $description])
         ;
     }
 

@@ -23,6 +23,11 @@ class SurveyTest extends TestCase
         ;
     }
 
+    /**
+     * Test survey index link to survey
+     *
+     * @return void
+     */
     public function testLinksToSurvey()
     {
         $this->loadFixtures();
@@ -31,6 +36,22 @@ class SurveyTest extends TestCase
             ->visit('/surveys')
             ->click($this->survey->name)
             ->seePageIs(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
+        ;
+    }
+
+    /**
+     * Test show survey
+     *
+     * @return void
+     */
+    public function testShowSurvey()
+    {
+        $this->loadFixtures();
+
+        $this
+            ->visit(action('SurveyController@getSurvey', ['id' => $this->survey->id]))
+            ->see($this->survey->name)
+            ->see($this->survey->description)
         ;
     }
 

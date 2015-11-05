@@ -3,7 +3,8 @@
     {{ $survey->name }}
 @endsection
 @section('content')
-    <h2>{{ $survey->name }}</h2>
+    <h2 class="survey-title">{{ $survey->name }}</h2>
+    <p class="survey-description">{{ $survey->description }}</p>
 
     @if($errors->any())
         <div class="alert alert-danger">

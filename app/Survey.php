@@ -13,7 +13,7 @@ class Survey extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description'];
 
     public function addResponse(Response $response)
     {

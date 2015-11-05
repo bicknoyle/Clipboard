@@ -22,7 +22,8 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Survey::class, function (Faker\Generator $faker) {
 	return [
-		'name' => $faker->text(50),
+		'name'        => $faker->text(50),
+		'description' => $faker->text(150),
 	];
 });
 

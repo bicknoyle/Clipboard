@@ -42,7 +42,7 @@ class SurveyController extends Controller
             'name' => 'required|min:3'
         ]);
 
-        $survey = Survey::create($request->only(['name']));
+        $survey = Survey::create($request->only(['name', 'description']));
         return redirect()
             ->route('admin.surveys.edit', ['id' => $survey->id])
             ->with('success', 'Survey created!')
@@ -87,7 +87,7 @@ class SurveyController extends Controller
         ]);
 
         $survey = Survey::findOrFail($id);
-        $survey->update($request->only(['name']));
+        $survey->update($request->only(['name', 'description']));
         return redirect()
             ->route('admin.surveys.edit', ['id' => $survey->id])
             ->with('success', 'Survey updated!')

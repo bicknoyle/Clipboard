@@ -13,7 +13,8 @@ class DemoSeeder extends Seeder
     public function run()
     {
         $survey = factory(App\Survey::class)->create([
-            'name' => 'Demo Survey',
+            'name'        => 'Demo Survey',
+            'description' => 'This is a demo survey, showcasing all of the different types of form fields the survey can create. Try it out!',
         ]);
 
         $survey->questions()->save(factory(App\Question::class)->make([
