@@ -162,6 +162,27 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
+     * Test that adding a duplicate field fails
+     *
+     * @return void
+     */
+    public function testDuplicateFieldFails()
+    {
+        $this->loadFixtures();
+
+        $label = $this->faker->sentence(3);
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        $this
+            ->visit($url)
+            ->type($label, 'label')
+            ->type($this->question->field, 'field')
+            ->press('Add')
+            ->see('The field has already been taken.')
+        ;
+    }
+
+    /**
      * Test text field doesnt accept options
      *
      * @return void

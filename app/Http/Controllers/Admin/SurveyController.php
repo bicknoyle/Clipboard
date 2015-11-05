@@ -125,7 +125,7 @@ class SurveyController extends Controller
 
         $this->validate($request, [
             'label'    => 'required',
-            'field'    => 'required',
+            'field'    => 'required|unique:questions,field,NULL,id,survey_id,'.$survey->id,
             'type'     => 'required|in:text,checkbox,radio,select',
             'required' => 'boolean',
             'options'  => 'required_if:type,select|required_if:type,radio|empty_if:type,text|empty_if:type,checkbox'
