@@ -24,7 +24,7 @@ class DemoSeeder extends Seeder
         ]));
 
         $survey->questions()->save(factory(App\Question::class)->make([
-            'label' => 'Phone (optional)',
+            'label' => 'Phone',
             'field' => 'phone',
         ]));
 
