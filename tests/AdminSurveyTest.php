@@ -76,11 +76,11 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
-     * Test reset survey form
+     * Test undo survey form
      *
      * @return void
      */
-    public function testReset()
+    public function testUndo()
     {
         $this->loadFixtures();
 
@@ -90,7 +90,7 @@ class AdminSurveyTest extends TestCase
         $this
             ->visit($url)
             ->type($name, 'name')
-            ->click('Reset')
+            ->click('Undo')
             ->seeInDatabase('surveys', ['name' => $this->survey->name])
         ;
     }

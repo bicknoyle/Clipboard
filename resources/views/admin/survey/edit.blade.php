@@ -8,7 +8,7 @@
         <div class="form-group">
             <button class="btn btn-primary" type="submit">Update</button>
 
-            <a class="btn btn-default" href="{{ route('admin.surveys.edit', ['id' => $survey->id]) }}"><i class="fa fa-undo"></i> Reset</a>
+            <a class="btn btn-default" href="{{ route('admin.surveys.edit', ['id' => $survey->id]) }}"><i class="fa fa-undo"></i> Undo</a>
         </div>
     {!! Form::close() !!}
 
