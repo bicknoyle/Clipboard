@@ -14,39 +14,43 @@
 
     <hr>
 
-    <h3>Questions</h3>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Label</th>
-                <th>Field</th>
-                <th>Type</th>
-                <th>Options</th>
-                <th>Required</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        @foreach($survey->questions as $question)
-            <tr>
-                <td>{{ $question->label }}</td>
-                <td>{{ $question->field }}</td>
-                <td>{{ $question->type }}</td>
-                <td>
-                    {{ $question->optionsToString() }}
-                </td>
-                <td>
-                    @if($question->isRequired())
-                        <i class="fa fa-check"></i>
-                    @endif
-                </td>
-                <td>
-                    {!! Form::open(['route' => ['admin.surveys.questions.destroy', $survey->id, $question->id], 'method' => 'delete']) !!}
-                        <button class="confirm-delete btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i><span class="sr-only">Delete Question Id:{{ $question->id }}</span></button>
-                    {!! Form::close() !!}
-                </td>
-            </tr>
-        @endforeach
-    </table>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Questions</h3>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Label</th>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Options</th>
+                    <th>Required</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            @foreach($survey->questions as $question)
+                <tr>
+                    <td>{{ $question->label }}</td>
+                    <td>{{ $question->field }}</td>
+                    <td>{{ $question->type }}</td>
+                    <td>
+                        {{ $question->optionsToString() }}
+                    </td>
+                    <td>
+                        @if($question->isRequired())
+                            <i class="fa fa-check"></i>
+                        @endif
+                    </td>
+                    <td>
+                        {!! Form::open(['route' => ['admin.surveys.questions.destroy', $survey->id, $question->id], 'method' => 'delete']) !!}
+                            <button class="confirm-delete btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i><span class="sr-only">Delete Question Id:{{ $question->id }}</span></button>
+                        {!! Form::close() !!}
+                    </td>
+                </tr>
+            @endforeach
+        </table>
+    </div>
 
     <hr>
 
