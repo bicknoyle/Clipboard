@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Survey;
 use App\Question;
+use Validator;
 
 class SurveyController extends Controller
 {
@@ -119,9 +120,23 @@ class SurveyController extends Controller
     {
         $survey = Survey::findOrFail($id);
 
+        $validator = Validator::make($request->all(), $this->questionValidationRules($survey->id), [
+            'options.empty_if' => 'The :attribute field should be empty for this type.'
+        ]);
+
+        /*
         $this->validate($request, $this->questionValidationRules($survey->id), [
             'options.empty_if' => 'The :attribute field should be empty for this type.'
         ]);
+        */
+
+        if ($validator->fails()) {
+            return redirect()
+                ->route('admin.surveys.edit', ['id' => $survey->id])
+                ->withErrors($validator, 'question')
+                ->withInput()
+            ;
+        }
 
         $question = new Question($request->only(['label', 'field', 'type']));
 

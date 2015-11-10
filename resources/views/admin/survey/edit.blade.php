@@ -8,6 +8,17 @@
                     <h4 class="modal-title">Add Question</h4>
                 </div>
                 <div class="modal-body">
+                    @if($errors->hasBag('question'))
+                        <div class="alert alert-danger">
+                            <p><strong>Uh-oh!</strong> There was a problem with your submission:</p>
+                            <ul>
+                                @foreach($errors->question->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <div class="form-group">
                         {!! Form::label('label') !!}
                         {!! Form::text('label', null, ['class' => 'form-control']) !!}
@@ -62,7 +73,7 @@
         <div class="form-group">
             <button class="btn btn-primary" type="submit">Update</button>
 
-            <a class="btn btn-default" href="{{ route('admin.surveys.edit', ['id' => $survey->id]) }}"><i class="fa fa-undo"></i> Undo</a>
+            <a class="btn btn-default" href="{{ route('admin.surveys.edit', ['id' => $survey->id]) }}">Reset</a>
         </div>
     {!! Form::close() !!}
 
@@ -120,6 +131,11 @@
 @endsection
 @section('js')
     @parent
+    @if($errors->hasBag('question'))
+        <script>
+            $('#add-question').modal('show');
+        </script>
+    @endif
     <script>
         $('.confirm-delete').on('click', function (e) {
             var confirmed = confirm("Are you sure you want to delete this?");
