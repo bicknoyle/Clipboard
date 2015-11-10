@@ -38,6 +38,13 @@
                 padding-top: 15px;
                 padding-bottom: 15px;
             }
+
+            .survey-list a {
+                font-size: 1.75em;
+            }
+            .survey-list li {
+                margin-bottom: 1em;
+            }
         </style>
     </head>
 <body>

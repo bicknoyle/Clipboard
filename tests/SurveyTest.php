@@ -20,6 +20,7 @@ class SurveyTest extends TestCase
         $this
             ->visit('/surveys')
             ->see($this->survey->name)
+            ->see($this->survey->description)
         ;
     }
 
