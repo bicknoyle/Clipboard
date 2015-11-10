@@ -1,6 +1,6 @@
 @extends('admin.layout')
 @section('content')
-    <h2>Create Survey</h2>
+    <h2>New Survey</h2>
     {!! Form::open(['route' => 'admin.surveys.store']) !!}
         @include('admin.survey._fields')
 

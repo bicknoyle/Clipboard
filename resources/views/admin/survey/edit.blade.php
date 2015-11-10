@@ -2,19 +2,19 @@
 @section('content')
 	<h2>Edit Survey</h2>
 
-    <h3>Survey Settings</h3>
-
 	{!! Form::model($survey, ['route' => ['admin.surveys.update', $survey->id], 'method' => 'put']) !!}
         @include('admin.survey._fields')
 
         <div class="form-group">
             <button class="btn btn-primary" type="submit">Update</button>
+
+            <a class="btn btn-default" href="{{ route('admin.surveys.edit', ['id' => $survey->id]) }}"><i class="fa fa-undo"></i> Reset</a>
         </div>
     {!! Form::close() !!}
 
     <hr>
 
-    <h3>Survey Questions</h3>
+    <h3>Questions</h3>
     <table class="table table-hover">
         <thead>
             <tr>

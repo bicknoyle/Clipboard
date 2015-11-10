@@ -76,6 +76,26 @@ class AdminSurveyTest extends TestCase
     }
 
     /**
+     * Test reset survey form
+     *
+     * @return void
+     */
+    public function testReset()
+    {
+        $this->loadFixtures();
+
+        $name = $this->faker->sentence(3);
+        $url = route('admin.surveys.edit', ['id' => $this->survey->id]);
+
+        $this
+            ->visit($url)
+            ->type($name, 'name')
+            ->click('Reset')
+            ->seeInDatabase('surveys', ['name' => $this->survey->name])
+        ;
+    }
+
+    /**
      * Test delete survey
      *
      * @return void
