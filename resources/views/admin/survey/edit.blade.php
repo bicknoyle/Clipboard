@@ -1,5 +1,59 @@
 @extends('admin.layout')
 @section('content')
+    <div id="add-question" tabindex="-1" role="dialog" class="modal fade">
+        {!! Form::open(['route' => ['admin.surveys.questions.store', $survey->id], 'class' => 'modal-dialog']) !!}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Question</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        {!! Form::label('label') !!}
+                        {!! Form::text('label', null, ['class' => 'form-control']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {!! Form::label('field') !!}
+                                {!! Form::text('field', null, ['class' => 'form-control']) !!}
+                            </div>
+                            <div class="col-md-6">
+                                {!! Form::label('type') !!}
+                                {!! Form::select('type', ['text' => 'text', 'checkbox' => 'checkbox', 'radio' => 'radio', 'select' => 'select'], null, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {!! Form::label('options') !!}
+                                {!! Form::text('options', null, ['class' => 'form-control']) !!}
+                                <div class="help-block">
+                                    Comma separated
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                {!! Form::checkbox('rules[required]') !!}
+                                Require this field
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div><!-- /.modal-content -->
+        {!! Form::close() !!}<!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 	<h2>Edit Survey</h2>
 
 	{!! Form::model($survey, ['route' => ['admin.surveys.update', $survey->id], 'method' => 'put']) !!}
@@ -52,61 +106,12 @@
         </table>
     </div>
 
-    <hr>
-
-    <h3>Add Question</h3>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            {!! Form::open(['route' => ['admin.surveys.questions.store', $survey->id]]) !!}
-                <div class="form-group">
-                    {!! Form::label('label') !!}
-                    {!! Form::text('label', null, ['class' => 'form-control']) !!}
-                </div>
-
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                            {!! Form::label('field') !!}
-                            {!! Form::text('field', null, ['class' => 'form-control']) !!}
-                        </div>
-                        <div class="col-md-6">
-                            {!! Form::label('type') !!}
-                            {!! Form::select('type', ['text' => 'text', 'checkbox' => 'checkbox', 'radio' => 'radio', 'select' => 'select'], null, ['class' => 'form-control']) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                            {!! Form::label('options') !!}
-                            {!! Form::text('options', null, ['class' => 'form-control']) !!}
-                            <div class="help-block">
-                                Comma separated
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            {!! Form::checkbox('rules[required]') !!}
-                            Require this field
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <button class="btn btn-primary" type="submit">Add</button>
-                </div>
-            {!! Form::close() !!}
-        </div>
-    </div>
+    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add-question">
+        <i class="fa fa-plus"></i> Add Question
+    </button>
 
     <hr>
 
-    <h3>Delete Survey</h3>
     {!! Form::open(['route' => ['admin.surveys.destroy', $survey->id], 'method' => 'delete']) !!}
         <div class="form-group">
             <button class="confirm-delete btn btn-danger" type="submit"><i class="fa fa-trash"></i> Delete Survey</button>
