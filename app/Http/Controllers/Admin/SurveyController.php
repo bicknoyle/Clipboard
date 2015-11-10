@@ -38,9 +38,7 @@ class SurveyController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|min:3'
-        ]);
+        $this->validate($request, $this->validationRules());
 
         $survey = Survey::create($request->only(['name', 'description']));
         return redirect()
@@ -82,9 +80,7 @@ class SurveyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required|min:3'
-        ]);
+        $this->validate($request, $this->validationRules());
 
         $survey = Survey::findOrFail($id);
         $survey->update($request->only(['name', 'description']));
@@ -123,13 +119,9 @@ class SurveyController extends Controller
     {
         $survey = Survey::findOrFail($id);
 
-        $this->validate($request, [
-            'label'    => 'required',
-            'field'    => 'required|unique:questions,field,NULL,id,survey_id,'.$survey->id,
-            'type'     => 'required|in:text,checkbox,radio,select',
-            'required' => 'boolean',
-            'options'  => 'required_if:type,select|required_if:type,radio|empty_if:type,text|empty_if:type,checkbox'
-        ], ['options.empty_if' => 'The :attribute field should be empty for this type.']);
+        $this->validate($request, $this->questionValidationRules($survey->id), [
+            'options.empty_if' => 'The :attribute field should be empty for this type.'
+        ]);
 
         $question = new Question($request->only(['label', 'field', 'type']));
 
@@ -173,5 +165,33 @@ class SurveyController extends Controller
             ->route('admin.surveys.edit', ['id' => $survey->id])
             ->with('success', 'Question deleted!')
         ;
+    }
+
+    /**
+     * Survey validation rules
+     *
+     * @return array
+     */
+    protected function validationRules()
+    {
+        return [
+            'name' => 'required|min:3'
+        ];
+    }
+
+    /**
+     * Question validation rules
+     *
+     * @return array
+     */
+    protected function questionValidationRules($survey_id)
+    {
+        return [
+            'label'    => 'required',
+            'field'    => 'required|unique:questions,field,NULL,id,survey_id,'.$survey_id,
+            'type'     => 'required|in:text,checkbox,radio,select',
+            'required' => 'boolean',
+            'options'  => 'required_if:type,select|required_if:type,radio|empty_if:type,text|empty_if:type,checkbox'
+        ];
     }
 }
